@@ -1,0 +1,27 @@
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+}
+.ant-rate {
+  position: absolute;
+  top: 234px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 18px auto;
+}
+@media (max-width: 500px) {
+  .ant-rate {
+    position: absolute;
+    right: 10px;
+    top: 200px;
+  }
+}
+@media (max-width: 994px) {
+  .movie-list {
+    justify-content: center;
+  }
+}
