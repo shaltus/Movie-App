@@ -1,3 +1,3 @@
-import { GenresProvider, GenresConsumer } from './Movie-service-context';
+import { GenresProvider, GenresConsumer } from './Movie-service-context'
 
-export { GenresConsumer, GenresProvider };
+export { GenresConsumer, GenresProvider }

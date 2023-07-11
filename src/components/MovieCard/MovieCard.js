@@ -1,46 +1,46 @@
-import React from 'react';
-import { Card, Tag, Rate, Spin } from 'antd';
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
+import React from 'react'
+import { Card, Tag, Rate, Spin } from 'antd'
+import PropTypes from 'prop-types'
+import { format } from 'date-fns'
 
-import './MovieCard.css';
-import { GenresConsumer } from '../../context';
+import './MovieCard.css'
+import { GenresConsumer } from '../../context'
 
 class MovieCard extends React.Component {
   state = {
     loading: true,
-  };
+  }
 
   handleImgLoad = () => {
-    this.setState({ loading: false });
-  };
+    this.setState({ loading: false })
+  }
 
   render() {
-    const { title, rating, description, genre, date, poster, onChange, stars } = this.props;
-    const { loading } = this.state;
+    const { title, rating, description, genre, date, poster, onChange, stars } = this.props
+    const { loading } = this.state
 
-    const imgNull = 'https://orac-ural.ru/wp-content/uploads/2018/01/placeholder_1000x1280.jpg';
-    const image = `https://image.tmdb.org/t/p/w500/${poster}`;
-    const imagePoster = poster ? image : imgNull;
+    const imgNull = 'https://orac-ural.ru/wp-content/uploads/2018/01/placeholder_1000x1280.jpg'
+    const image = `https://image.tmdb.org/t/p/w500/${poster}`
+    const imagePoster = poster ? image : imgNull
 
-    let color;
+    let color
     if (rating > 7) {
-      color = '#66E900';
+      color = '#66E900'
     } else if (rating >= 5) {
-      color = '#E9D100';
+      color = '#E9D100'
     } else if (rating > 3) {
-      color = '#E97E00';
+      color = '#E97E00'
     } else {
-      color = '#E90000';
+      color = '#E90000'
     }
 
     return (
       <GenresConsumer>
         {(genres) => {
           const genreNames = genre.map((id) => {
-            const genreObj = genres.find((gen) => gen.id === id);
-            return genreObj ? genreObj.name : '';
-          });
+            const genreObj = genres.find((gen) => gen.id === id)
+            return genreObj ? genreObj.name : ''
+          })
           return (
             <Card className="card">
               <div className="card__image">
@@ -83,17 +83,17 @@ class MovieCard extends React.Component {
               </div>
               <div />
             </Card>
-          );
+          )
         }}
       </GenresConsumer>
-    );
+    )
   }
 }
 MovieCard.defaultProps = {
   stars: 0,
   date: '',
   poster: '',
-};
+}
 
 MovieCard.propTypes = {
   title: PropTypes.string.isRequired,
@@ -104,5 +104,5 @@ MovieCard.propTypes = {
   poster: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   stars: PropTypes.number,
-};
-export default MovieCard;
+}
+export default MovieCard

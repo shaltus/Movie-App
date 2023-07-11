@@ -1,18 +1,18 @@
-import React from 'react';
-import { Pagination } from 'antd';
-import PropTypes from 'prop-types';
+import React from 'react'
+import { Pagination } from 'antd'
+import PropTypes from 'prop-types'
 
-import MovieCard from '../MovieCard/MovieCard';
-import './MovieList.css';
+import MovieCard from '../MovieCard/MovieCard'
+import './MovieList.css'
 
 class MovieList extends React.Component {
   state = {
     loading: false,
-  };
+  }
 
   render() {
-    const { movies, onChange } = this.props;
-    const { loading } = this.state;
+    const { movies, onChange } = this.props
+    const { loading } = this.state
     return (
       <div>
         <div className="movie-list">
@@ -44,7 +44,7 @@ class MovieList extends React.Component {
           />
         )}
       </div>
-    );
+    )
   }
 }
 MovieList.defaultProps = {
@@ -53,13 +53,13 @@ MovieList.defaultProps = {
   currentPage: 1,
   onChange: () => {},
   onPageChange: () => {},
-};
+}
 MovieList.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.object),
   onChange: PropTypes.func,
   totalResults: PropTypes.number,
   currentPage: PropTypes.number,
   onPageChange: PropTypes.func,
-};
+}
 
-export default MovieList;
+export default MovieList

@@ -1,15 +1,15 @@
-import React from 'react';
-import { debounce } from 'lodash';
-import { Alert } from 'antd';
+import React from 'react'
+import { debounce } from 'lodash'
+import { Alert } from 'antd'
 
-import Search from '../Search/Search';
-import Header from '../Header/Header';
-import MovieList from '../MovieList/MovieList';
-import MovieService from '../../services/MovieService';
-import { GenresProvider } from '../../context';
+import Search from '../Search/Search'
+import Header from '../Header/Header'
+import MovieList from '../MovieList/MovieList'
+import MovieService from '../../services/MovieService'
+import { GenresProvider } from '../../context'
 
 class App extends React.Component {
-  movieService = new MovieService();
+  movieService = new MovieService()
 
   state = {
     searchValue: '',
@@ -20,48 +20,48 @@ class App extends React.Component {
     stars: {},
     moviesRateData: [],
     error: false,
-  };
+  }
 
-  debounced = debounce(this.updateMovies, 1000);
+  debounced = debounce(this.updateMovies, 1000)
 
   componentDidMount() {
-    this.getGenres();
+    this.getGenres()
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.searchValue !== prevState.searchValue) {
-      this.debounced(this.state.searchValue, this.state.currentPage);
+      this.debounced(this.state.searchValue, this.state.currentPage)
     }
   }
 
   componentDidCatch() {
-    this.setState({ error: true });
+    this.setState({ error: true })
   }
 
   onPageChange = (page) => {
     if (this.state.currentTab === 'rated') {
       this.setState({ currentPage: page }, () => {
-        this.ratedFilms(page);
-      });
+        this.ratedFilms(page)
+      })
     } else {
       this.setState({ currentPage: page }, () => {
-        this.updateMovies(this.state.searchValue, page);
-      });
+        this.updateMovies(this.state.searchValue, page)
+      })
     }
-  };
+  }
 
   getGenres = () => {
     this.movieService
       .getGenresMovies()
       .then((data) => {
-        this.setState(() => ({ genres: data.genres }));
+        this.setState(() => ({ genres: data.genres }))
       })
-      .catch(() => this.setState({ error: true }));
-  };
+      .catch(() => this.setState({ error: true }))
+  }
 
   ratedFilms = async (page = 1) => {
     if (!this.tokenId) {
-      await this.movieService.getGuestSession();
+      await this.movieService.getGuestSession()
     }
   
     this.movieService
@@ -70,10 +70,10 @@ class App extends React.Component {
         this.setState(() => ({
           moviesRateData: rateData.results,
           pageRate: rateData.total_results,
-        }));
+        }))
       })
-      .catch(() => this.setState({ error: true }));
-  };
+      .catch(() => this.setState({ error: true }))
+  }
 
   onChange = async (star, id) => {
     this.setState((prevState) => ({
@@ -81,28 +81,28 @@ class App extends React.Component {
         ...prevState.stars,
         [id]: star,
       },
-    }));
+    }))
     try {
-      await this.movieService.postRateMovie(id, star);
+      await this.movieService.postRateMovie(id, star)
     } catch (e) {
-      this.setState({ error: true });
+      this.setState({ error: true })
     }
-  };
+  }
 
   setTab = (event) => {
     this.setState({
       currentTab: event,
-    });
+    })
     if (event === 'rated') {
-      this.ratedFilms();
+      this.ratedFilms()
     }
-  };
+  }
 
   onLabelChange = (e) => {
     this.setState({
       searchValue: e.target.value,
-    });
-  };
+    })
+  }
 
   updateMovies(searchValue, page) {
     this.movieService
@@ -112,9 +112,9 @@ class App extends React.Component {
           movies: result.results,
           currentPage: result.page,
           totalResults: result.total_results,
-        });
+        })
       })
-      .catch(() => this.setState({ error: true }));
+      .catch(() => this.setState({ error: true }))
   }
 
   render() {
@@ -153,7 +153,7 @@ class App extends React.Component {
           />
         )}
       </main>
-    );
+    )
   }
 }
-export default App;
+export default App
