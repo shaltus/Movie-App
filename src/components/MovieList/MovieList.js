@@ -8,7 +8,6 @@ import './MovieList.css';
 class MovieList extends React.Component {
   state = {
     loading: false,
-    totalPages: 50,
   };
 
   render() {
@@ -52,13 +51,15 @@ MovieList.defaultProps = {
   movies: [],
   totalResults: 0,
   currentPage: 1,
+  onChange: () => {},
+  onPageChange: () => {},
 };
 MovieList.propTypes = {
-  movies: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.object),
+  onChange: PropTypes.func,
   totalResults: PropTypes.number,
   currentPage: PropTypes.number,
-  onPageChange: PropTypes.func.isRequired,
+  onPageChange: PropTypes.func,
 };
 
 export default MovieList;

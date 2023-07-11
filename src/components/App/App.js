@@ -24,24 +24,18 @@ class App extends React.Component {
 
   debounced = debounce(this.updateMovies, 1000);
 
+  componentDidMount() {
+    this.getGenres();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.searchValue !== prevState.searchValue) {
-      console.log('searchValue = ', this.state.searchValue);
-      console.log('prevProps.searchValue =', prevState.searchValue);
       this.debounced(this.state.searchValue, this.state.currentPage);
     }
   }
-  updateMovies(searchValue, page) {
-    this.movieService
-      .getSearchMovies(searchValue, page)
-      .then((result) => {
-        this.setState({
-          movies: result.results,
-          currentPage: result.page,
-          totalResults: result.total_results,
-        });
-      })
-      .catch(() => this.setState({ error: true }));
+
+  componentDidCatch() {
+    this.setState({ error: true });
   }
 
   onPageChange = (page) => {
@@ -56,19 +50,29 @@ class App extends React.Component {
     }
   };
 
-  onLabelChange = (e) => {
-    this.setState({
-      searchValue: e.target.value,
-    });
+  getGenres = () => {
+    this.movieService
+      .getGenresMovies()
+      .then((data) => {
+        this.setState(() => ({ genres: data.genres }));
+      })
+      .catch(() => this.setState({ error: true }));
   };
 
-  setTab = (event) => {
-    this.setState({
-      currentTab: event,
-    });
-    if (event === 'rated') {
-      this.ratedFilms();
+  ratedFilms = async (page = 1) => {
+    if (!this.tokenId) {
+      await this.movieService.getGuestSession();
     }
+  
+    this.movieService
+      .getRateMovies(page)
+      .then((rateData) => {
+        this.setState(() => ({
+          moviesRateData: rateData.results,
+          pageRate: rateData.total_results,
+        }));
+      })
+      .catch(() => this.setState({ error: true }));
   };
 
   onChange = async (star, id) => {
@@ -85,39 +89,33 @@ class App extends React.Component {
     }
   };
 
-  ratedFilms = (page = 1) => {
+  setTab = (event) => {
+    this.setState({
+      currentTab: event,
+    });
+    if (event === 'rated') {
+      this.ratedFilms();
+    }
+  };
+
+  onLabelChange = (e) => {
+    this.setState({
+      searchValue: e.target.value,
+    });
+  };
+
+  updateMovies(searchValue, page) {
     this.movieService
-      .getRateMovies(page)
-      .then((rateData) => {
-        this.setState(() => {
-          return {
-            moviesRateData: rateData.results,
-            pageRateAll: rateData.total_pages,
-            pageRate: rateData.total_results,
-          };
+      .getSearchMovies(searchValue, page)
+      .then((result) => {
+        this.setState({
+          movies: result.results,
+          currentPage: result.page,
+          totalResults: result.total_results,
         });
       })
       .catch(() => this.setState({ error: true }));
-  };
-
-  componentDidMount() {
-    this.getGenres();
   }
-
-  componentDidCatch() {
-    this.setState({ error: true });
-  }
-
-  getGenres = () => {
-    this.movieService
-      .getGenresMovies()
-      .then((data) => {
-        this.setState(() => {
-          return { genres: data.genres };
-        });
-      })
-      .catch(() => this.setState({ error: true }));
-  };
 
   render() {
     return (

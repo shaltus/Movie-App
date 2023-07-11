@@ -1,12 +1,15 @@
 export default class MovieService {
   apiKey = 'd42d5cd7bcaef968fc438488729f61e7';
+
   mainUrl = 'https://api.themoviedb.org/3/';
+
   tokenId = null;
 
   async getResource(url) {
     const res = await fetch(url);
     return await res.json();
   }
+
   catch(error) {
     throw new Error(error);
   }
@@ -19,16 +22,16 @@ export default class MovieService {
   }
 
   async getGuestSession() {
-    await this.getResource(`${this.mainUrl}authentication/guest_session/new?api_key=${this.apiKey}`)
+     return await this.getResource(`${this.mainUrl}authentication/guest_session/new?api_key=${this.apiKey}`)
       .then((data) => {
         if (localStorage.getItem('guest_session_id')) {
-          this.tokenId = localStorage.getItem('guest_session_id');
-          return localStorage.getItem('guest_session_id');
+          this.tokenId = localStorage.getItem('guest_session_id')
+          return localStorage.getItem('guest_session_id')
         }
-        this.tokenId = data.guest_session_id;
-        localStorage.setItem('guest_session_id', this.tokenId);
+        this.tokenId = data.guest_session_id
+        localStorage.setItem('guest_session_id', this.tokenId)
       })
-      .catch((e) => e);
+      .catch((e) => e)
   }
 
   async postRateMovie(id, stars) {
@@ -47,7 +50,7 @@ export default class MovieService {
       `${this.mainUrl}movie/${id}/rating?api_key=${this.apiKey}&guest_session_id=${this.tokenId}`,
       request
     );
-    console.log(response);
+
     if (!response.ok) {
       throw new Error(`Could not fetch, status: ${response.status}`);
     }
@@ -59,6 +62,7 @@ export default class MovieService {
     );
     return result;
   }
+
   async getGenresMovies() {
     const genresList = await this.getResource(`${this.mainUrl}genre/movie/list?api_key=${this.apiKey}`);
     return genresList;

@@ -9,8 +9,8 @@ import { GenresConsumer } from '../../context';
 class MovieCard extends React.Component {
   state = {
     loading: true,
-    genres: [],
   };
+
   handleImgLoad = () => {
     this.setState({ loading: false });
   };
@@ -63,8 +63,8 @@ class MovieCard extends React.Component {
                 </div>
                 <p className="card__release-date">{date ? format(new Date(date), 'MMMM d, yyyy') : ''}</p>
                 <div className="card__tags">
-                  {genreNames.map((genreName, index) => (
-                    <Tag className="card__genre" key={index}>
+                  {genreNames.map((genreName) => (
+                    <Tag className="card__genre" key={genreName}>
                       {genreName}
                     </Tag>
                   ))}
@@ -78,10 +78,10 @@ class MovieCard extends React.Component {
                     defaultValue={0}
                     onChange={(value) => onChange(value, this.props.id)}
                     value={stars}
-                  ></Rate>
+                  />
                 </div>
               </div>
-              <div></div>
+              <div />
             </Card>
           );
         }}
@@ -91,6 +91,8 @@ class MovieCard extends React.Component {
 }
 MovieCard.defaultProps = {
   stars: 0,
+  date: '',
+  poster: '',
 };
 
 MovieCard.propTypes = {
